@@ -18,6 +18,8 @@ const Category = () => {
     setProducts(categoriesObject[category]);
   }, [category, categoriesObject]);
 
+  console.log(isLoading);
+
   return (
     <Fragment>
       <Title>{category.toUpperCase()}</Title>

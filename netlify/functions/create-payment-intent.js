@@ -1,24 +1,23 @@
-require("dotenv").config(); //Loads all the .env variables into local environment.
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // stripe gets access to secret key from the current environment.
+require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.handler = async (event) => {
   try {
-    const { amount } = event.body;
+    const { amount } = JSON.parse(event.body);
 
-    //creating a payment intent. Information about an upcoming Payment to stripe.
-    const paymentIntent = await stripe.paymentIntent.create({
+    const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
       payment_method_types: ["card"],
     });
 
     return {
-      status: 200,
+      statusCode: 200,
       body: JSON.stringify(paymentIntent),
     };
   } catch (error) {
     return {
-      status: 400,
+      statusCode: 400,
       body: JSON.stringify(error),
     };
   }
